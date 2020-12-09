@@ -1,5 +1,6 @@
 package engine.controllers;
 
+import engine.models.Answer;
 import engine.models.Quiz;
 import engine.services.QuizService;
 import lombok.RequiredArgsConstructor;
@@ -30,5 +31,10 @@ public class QuizzesController {
     @GetMapping
     public Quiz[] getAllQuizzes() {
         return quizService.getAllQuizzes();
+    }
+
+    @PostMapping("{id}/solve")
+    public Answer solveQuiz(@PathVariable int id, int answer) {
+        return quizService.solve(id, answer);
     }
 }

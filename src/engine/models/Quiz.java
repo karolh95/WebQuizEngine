@@ -17,4 +17,8 @@ public class Quiz {
     private final int answer;
     @Setter
     private int id;
+
+    public Answer testAnswer(int answer) {
+        return (answer == this.answer) ? Answer.CORRECT : Answer.WRONG;
+    }
 }

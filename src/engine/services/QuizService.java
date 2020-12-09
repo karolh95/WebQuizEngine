@@ -1,6 +1,7 @@
 package engine.services;
 
 import engine.exceptions.QuizNotFoundException;
+import engine.models.Answer;
 import engine.models.Quiz;
 import org.springframework.stereotype.Service;
 
@@ -30,5 +31,10 @@ public class QuizService {
     public Quiz[] getAllQuizzes() {
 
         return quizzes.values().toArray(Quiz[]::new);
+    }
+
+    public Answer solve(int id, int answer) {
+
+        return getQuiz(id).testAnswer(answer);
     }
 }
