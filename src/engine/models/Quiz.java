@@ -15,12 +15,12 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public class Quiz {
 
-    @NotEmpty
+    @NotEmpty(message = "Title should not be empty.")
     private final String title;
-    @NotEmpty
+    @NotEmpty(message = "Text should not be empty.")
     private final String text;
-    @NotNull
-    @Size(min = 2)
+    @NotNull(message = "Options should not be empty.")
+    @Size(min = 2, message = "Options should contain at least 2 elements.")
     private final String[] options;
     @JsonProperty(access = Access.WRITE_ONLY)
     private final int[] answer;
