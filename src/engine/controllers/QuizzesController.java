@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.Map;
 
 @RestController
@@ -21,7 +22,7 @@ public class QuizzesController {
     private final QuizService quizService;
 
     @PostMapping
-    public Quiz addQuiz(@RequestBody Quiz quiz) {
+    public Quiz addQuiz(@Valid @RequestBody Quiz quiz) {
         return quizService.addQuiz(quiz);
     }
 

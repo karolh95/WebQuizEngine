@@ -6,14 +6,21 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Arrays;
 
 @Getter
 @RequiredArgsConstructor
 public class Quiz {
 
+    @NotEmpty
     private final String title;
+    @NotEmpty
     private final String text;
+    @NotNull
+    @Size(min = 2)
     private final String[] options;
     @JsonProperty(access = Access.WRITE_ONLY)
     private final int[] answer;
