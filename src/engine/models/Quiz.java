@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.util.Arrays;
+
 @Getter
 @RequiredArgsConstructor
 public class Quiz {
@@ -14,11 +16,13 @@ public class Quiz {
     private final String text;
     private final String[] options;
     @JsonProperty(access = Access.WRITE_ONLY)
-    private final int answer;
+    private final int[] answer;
     @Setter
     private int id;
 
-    public Answer testAnswer(int answer) {
-        return (answer == this.answer) ? Answer.CORRECT : Answer.WRONG;
+    public Answer testAnswer(int[] answer) {
+
+        boolean isCorrect = Arrays.equals(this.answer, answer);
+        return isCorrect ? Answer.CORRECT : Answer.WRONG;
     }
 }

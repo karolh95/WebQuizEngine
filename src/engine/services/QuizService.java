@@ -16,6 +16,9 @@ public class QuizService {
 
     public Quiz addQuiz(Quiz quiz) {
 
+        if (quiz.getAnswer() == null) {
+            quiz = new Quiz(quiz.getTitle(), quiz.getText(), quiz.getOptions(), new int[0]);
+        }
         quiz.setId(currentId);
         quizzes.put(currentId, quiz);
         currentId++;
@@ -33,8 +36,7 @@ public class QuizService {
         return quizzes.values().toArray(Quiz[]::new);
     }
 
-    public Answer solve(int id, int answer) {
-
+    public Answer solve(int id, int[] answer) {
         return getQuiz(id).testAnswer(answer);
     }
 }

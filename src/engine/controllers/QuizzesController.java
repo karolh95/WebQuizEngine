@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("api/quizzes")
 @RequiredArgsConstructor
@@ -34,7 +36,7 @@ public class QuizzesController {
     }
 
     @PostMapping("{id}/solve")
-    public Answer solveQuiz(@PathVariable int id, int answer) {
-        return quizService.solve(id, answer);
+    public Answer solveQuiz(@PathVariable int id, @RequestBody Map<String, int[]> body) {
+        return quizService.solve(id, body.get("answer"));
     }
 }
