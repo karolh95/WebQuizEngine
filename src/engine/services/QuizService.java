@@ -5,6 +5,7 @@ import engine.models.Answer;
 import engine.models.Quiz;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -33,9 +34,9 @@ public class QuizService {
         return Optional.ofNullable(quizzes.get(id)).orElseThrow(QuizNotFoundException::new);
     }
 
-    public Quiz[] getAllQuizzes() {
+    public List<Quiz> getAllQuizzes() {
 
-        return quizzes.values().toArray(Quiz[]::new);
+        return new ArrayList<Quiz>(quizzes.values());
     }
 
     public Answer solve(int id, List<Integer> answer) {
