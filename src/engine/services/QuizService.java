@@ -5,6 +5,8 @@ import engine.models.Answer;
 import engine.models.Quiz;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.TreeMap;
 
@@ -17,7 +19,7 @@ public class QuizService {
     public Quiz addQuiz(Quiz quiz) {
 
         if (quiz.getAnswer() == null) {
-            quiz = new Quiz(quiz.getTitle(), quiz.getText(), quiz.getOptions(), new int[0]);
+            quiz = new Quiz(quiz.getTitle(), quiz.getText(), quiz.getOptions(), Collections.emptyList());
         }
         quiz.setId(currentId);
         quizzes.put(currentId, quiz);
@@ -36,7 +38,7 @@ public class QuizService {
         return quizzes.values().toArray(Quiz[]::new);
     }
 
-    public Answer solve(int id, int[] answer) {
+    public Answer solve(int id, List<Integer> answer) {
         return getQuiz(id).testAnswer(answer);
     }
 }

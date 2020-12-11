@@ -9,7 +9,7 @@ import lombok.Setter;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Arrays;
+import java.util.List;
 
 @Getter
 @RequiredArgsConstructor
@@ -23,13 +23,13 @@ public class Quiz {
     @Size(min = 2, message = "Options should contain at least 2 elements.")
     private final String[] options;
     @JsonProperty(access = Access.WRITE_ONLY)
-    private final int[] answer;
+    private final List<Integer> answer;
     @Setter
     private int id;
 
-    public Answer testAnswer(int[] answer) {
+    public Answer testAnswer(List<Integer> answer) {
 
-        boolean isCorrect = Arrays.equals(this.answer, answer);
+        boolean isCorrect = answer.equals(getAnswer());
         return isCorrect ? Answer.CORRECT : Answer.WRONG;
     }
 }
