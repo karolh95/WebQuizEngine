@@ -2,6 +2,7 @@ package engine.controllers;
 
 import engine.models.Answer;
 import engine.models.Quiz;
+import engine.models.UserAnswer;
 import engine.services.QuizService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.Map;
 
 @RestController
 @RequestMapping("api/quizzes")
@@ -37,7 +37,7 @@ public class QuizzesController {
     }
 
     @PostMapping("{id}/solve")
-    public Answer solveQuiz(@PathVariable int id, @RequestBody Map<String, int[]> body) {
-        return quizService.solve(id, body.get("answer"));
+    public Answer solveQuiz(@PathVariable int id, @RequestBody UserAnswer userAnswer) {
+        return quizService.solve(id, userAnswer.getAnswer());
     }
 }
