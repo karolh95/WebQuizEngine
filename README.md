@@ -15,8 +15,8 @@ You will clearly understand what is the backend development and how to use many 
 - [x] [Solving a simple quiz](#solving-a-simple-quiz)
 - [X] [Lots of quizzes](#lots-of-quizzes)
 - [X] [Making quizzes more interesting](#making-quizzes-more-interesting)
-- [ ] [Moving quizzes to DB](#moving-quizzes-to-db)
-- [ ] User authorization
+- [x] [Moving quizzes to DB](#moving-quizzes-to-db)
+- [ ] [User authorization](#user-authorization)
 - [ ] Advanced queries
 
 ## Solving a simple quiz
@@ -269,4 +269,52 @@ spring.jpa.show-sql=true
 ```
 
 You can use any tables in your database to complete this stage. The main thing is that when you restart the service, quizzes should not be lost. Our tests will create and get them via the API developed at the previous stages.
+
+## User authorization
+
+Your service already has a well-designed API and stores all the quizzes in the database. At this stage, you will improve the service to support users and the authorization process. This will allow you to provide different privileges to the users and understand what do they do in the service.
+
+Here are two operations to be added:
+- register a new user, which accepts an email as the login and a password;
+- deleting a quiz created by the current user.
+
+All the previously developed operations should not be changed. 
+
+For the testing reasons, make `POST` `/actuator/shutdown` endpoint accessible without authentication.
+The main change is the accessibility of these operations. Now, to perform any operations with quizzes (**create**, **solve**, **get** **one**, **get all**, **delete**), the user has to be registered and then authorized via **HTTP Basic Auth** by sending their email and password for each request. Otherwise, the service returns the `401 (Unauthorized)` status code. Thus, the only operation that does not require authorization is the registration.
+
+Do not store the actual password in the database! Instead, configure password encryption using `BCrypt` or some other algorithm via Spring Security.
+
+### Register a user
+
+To register a new user, the client needs to send a JSON with `email` and `password` via `POST` request to `/api/register`:
+
+```json
+{
+  "email": "test@gmail.com",
+  "password": "secret"
+}
+```
+The service returns `200 (OK)` status code if the registration has been completed successfully.
+
+If the `email` is already taken by another user, the service will return the `400 (Bad request)` status code.
+
+Here are some additional restrictions to the format of user credentials:
+- the email must have a valid format (with `@` and `.`);
+- the password must have at least five characters.
+If any of them is not satisfied, the service will also return the `400 (Bad request)` status code.
+
+All the following operations need a registered user to be successfully completed.
+
+### Delete a quiz
+
+A user can delete their quiz by sending the `DELETE` request to `/api/quizzes/{id}`.
+
+If the operation was successful, the service returns the `204 (No content)` status code without any content.
+
+If the specified quiz does not exist, the server returns `404 (Not found)`. If the specified user is not the author of this quiz, the response is the `403 (Forbidden)` status code.
+
+### Additional ideas
+
+If you would like your service to support more operations, add `PUT` or `PATCH` to update existing quizzes in the similar way as `DELETE`. Our tests will not verify these operations.
 
