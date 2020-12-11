@@ -3,40 +3,36 @@ package engine.services;
 import engine.exceptions.QuizNotFoundException;
 import engine.models.Answer;
 import engine.models.Quiz;
+import engine.repositories.QuizRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
-import java.util.TreeMap;
 
 @Service
+@RequiredArgsConstructor
 public class QuizService {
 
-    private final TreeMap<Integer, Quiz> quizzes = new TreeMap<>();
-    private int currentId;
+    private final QuizRepository repository;
 
     public Quiz addQuiz(Quiz quiz) {
 
         if (quiz.getAnswer() == null) {
-            quiz = new Quiz(quiz.getTitle(), quiz.getText(), quiz.getOptions(), Collections.emptyList());
+            quiz.setAnswer(Collections.emptyList());
         }
-        quiz.setId(currentId);
-        quizzes.put(currentId, quiz);
-        currentId++;
 
-        return quiz;
+        return repository.save(quiz);
     }
 
     public Quiz getQuiz(int id) {
 
-        return Optional.ofNullable(quizzes.get(id)).orElseThrow(QuizNotFoundException::new);
+        return repository.findById(id).orElseThrow(QuizNotFoundException::new);
     }
 
     public List<Quiz> getAllQuizzes() {
 
-        return new ArrayList<Quiz>(quizzes.values());
+        return repository.findAll();
     }
 
     public Answer solve(int id, List<Integer> answer) {
