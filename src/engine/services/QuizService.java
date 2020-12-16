@@ -57,6 +57,16 @@ public class QuizService {
         }
     }
 
+    public Quiz updateQuiz(UserDetails userDetails, Quiz quiz) {
+
+        Quiz savedQuiz = getQuiz(quiz.getId());
+        if (userDetailsEquals(userDetails, savedQuiz.getUser())) {
+            return repository.save(quiz);
+        } else {
+            throw new Unauthorized();
+        }
+    }
+
     private boolean userDetailsEquals(UserDetails userDetails, User user) {
         return userDetails.getUsername().equals(user.getUsername());
     }
