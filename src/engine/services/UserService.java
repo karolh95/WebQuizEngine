@@ -20,7 +20,12 @@ public class UserService implements UserDetailsService {
     private final PasswordEncoder encoder;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
+        return getUserByUsername(username);
+    }
+
+    public User getUserByUsername(String username) {
+
         return repository.findByUsername(username).orElseThrow(userNotFound(username));
     }
 
