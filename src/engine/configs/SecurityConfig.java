@@ -21,9 +21,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.httpBasic().and()
                 .authorizeRequests()
                 .antMatchers("/api/register").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/quizzes").permitAll()
-                .antMatchers("/api/quizzes").authenticated()
-                .antMatchers("/api/quizzes/{id:[0-9]+}/solve").authenticated()
                 .antMatchers(HttpMethod.POST, "/actuator/shutdown").permitAll()
                 .anyRequest().authenticated()
         ;
