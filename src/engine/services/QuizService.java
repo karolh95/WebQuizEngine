@@ -3,6 +3,7 @@ package engine.services;
 import engine.exceptions.QuizNotFoundException;
 import engine.exceptions.Unauthorized;
 import engine.models.Answer;
+import engine.models.CompletedQuiz;
 import engine.models.Quiz;
 import engine.models.User;
 import engine.repositories.QuizRepository;
@@ -24,6 +25,7 @@ public class QuizService {
 
     private final QuizRepository repository;
     private final UserService service;
+    private final CompletedQuizzesService completedQuizzesService;
 
     public Quiz addQuiz(UserDetails userDetails, Quiz quiz) {
 
@@ -49,8 +51,20 @@ public class QuizService {
         return repository.findAll(pageable);
     }
 
-    public Answer solve(int id, List<Integer> answer) {
-        return getQuiz(id).testAnswer(answer);
+    public Page<CompletedQuiz> getCompletedQuizzes(UserDetails userDetails, int page) {
+
+        return completedQuizzesService.getCompletedQuizzesByUsername(userDetails.getUsername(), page);
+    }
+
+    public Answer solve(int id, UserDetails userDetails, List<Integer> userAnswer) {
+
+        Quiz quiz = getQuiz(id);
+        Answer answer = quiz.testAnswer(userAnswer);
+        if (answer == Answer.CORRECT) {
+            User user = service.getUserByUsername(userDetails.getUsername());
+            completedQuizzesService.completeQuiz(user, quiz);
+        }
+        return answer;
     }
 
     public void deleteQuiz(UserDetails userDetails, int id) {

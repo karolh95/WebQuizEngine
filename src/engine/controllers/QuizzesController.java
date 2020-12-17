@@ -1,6 +1,7 @@
 package engine.controllers;
 
 import engine.models.Answer;
+import engine.models.CompletedQuiz;
 import engine.models.Quiz;
 import engine.models.UserAnswer;
 import engine.services.QuizService;
@@ -35,9 +36,14 @@ public class QuizzesController {
         return quizService.getQuizzes(page);
     }
 
+    @GetMapping("completed")
+    public Page<CompletedQuiz> getCompletedQuizzes(@AuthenticationPrincipal UserDetails userDetails, @RequestParam(defaultValue = "0") int page) {
+        return quizService.getCompletedQuizzes(userDetails, page);
+    }
+
     @PostMapping("{id}/solve")
-    public Answer solveQuiz(@PathVariable int id, @RequestBody UserAnswer userAnswer) {
-        return quizService.solve(id, userAnswer.getAnswer());
+    public Answer solveQuiz(@AuthenticationPrincipal UserDetails userDetails, @PathVariable int id, @RequestBody UserAnswer userAnswer) {
+        return quizService.solve(id, userDetails, userAnswer.getAnswer());
     }
 
     @PutMapping

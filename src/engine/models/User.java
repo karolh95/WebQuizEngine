@@ -1,5 +1,6 @@
 package engine.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import lombok.Data;
@@ -33,6 +34,10 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Quiz> quizzes;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<CompletedQuiz> completedQuizzes;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
