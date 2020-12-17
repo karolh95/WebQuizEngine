@@ -17,7 +17,7 @@ You will clearly understand what is the backend development and how to use many 
 - [X] [Making quizzes more interesting](#making-quizzes-more-interesting)
 - [x] [Moving quizzes to DB](#moving-quizzes-to-db)
 - [x] [User authorization](#user-authorization)
-- [ ] [Advanced queries](#advanced-queries)
+- [x] [Advanced queries](#advanced-queries)
 
 ## Solving a simple quiz
 
