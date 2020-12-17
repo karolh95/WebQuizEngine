@@ -7,6 +7,9 @@ import engine.models.Quiz;
 import engine.models.User;
 import engine.repositories.QuizRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +19,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class QuizService {
+
+    private final static int DEFAULT_PAGE_SIZE = 10;
 
     private final QuizRepository repository;
     private final UserService service;
@@ -38,9 +43,10 @@ public class QuizService {
         return repository.findById(id).orElseThrow(QuizNotFoundException::new);
     }
 
-    public List<Quiz> getAllQuizzes() {
+    public Page<Quiz> getQuizzes(int page) {
 
-        return repository.findAll();
+        Pageable pageable = PageRequest.of(page, DEFAULT_PAGE_SIZE);
+        return repository.findAll(pageable);
     }
 
     public Answer solve(int id, List<Integer> answer) {
