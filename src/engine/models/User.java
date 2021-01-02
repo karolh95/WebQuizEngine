@@ -33,6 +33,7 @@ public class User implements UserDetails {
     private String password;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Quiz> quizzes;
 
     @OneToMany(mappedBy = "user")
