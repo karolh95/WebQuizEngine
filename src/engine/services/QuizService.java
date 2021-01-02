@@ -51,6 +51,11 @@ public class QuizService {
         return repository.findAll(pageable);
     }
 
+    public Page<Quiz> getQuizzes(int page, String username){
+        Pageable pageable = PageRequest.of(page, DEFAULT_PAGE_SIZE);
+        return repository.findAllByUserUsername(username, pageable);
+    }
+
     public Page<CompletedQuiz> getCompletedQuizzes(UserDetails userDetails, int page) {
 
         return completedQuizzesService.getCompletedQuizzesByUsername(userDetails.getUsername(), page);

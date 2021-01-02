@@ -36,6 +36,11 @@ public class QuizzesController {
         return quizService.getQuizzes(page);
     }
 
+    @GetMapping("my")
+    public Page<Quiz> getAllQuizzes(@RequestParam(defaultValue = "0") int page, @AuthenticationPrincipal UserDetails userDetails){
+        return quizService.getQuizzes(page, userDetails.getUsername());
+    }
+
     @GetMapping("completed")
     public Page<CompletedQuiz> getCompletedQuizzes(@AuthenticationPrincipal UserDetails userDetails, @RequestParam(defaultValue = "0") int page) {
         return quizService.getCompletedQuizzes(userDetails, page);
