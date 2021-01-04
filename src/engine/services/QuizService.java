@@ -82,17 +82,24 @@ public class QuizService {
         }
     }
 
-    public Quiz updateQuiz(UserDetails userDetails, Quiz quiz) {
+    public Quiz updateQuiz(int id, UserDetails userDetails, Quiz quiz) {
 
-        Quiz savedQuiz = getQuiz(quiz.getId());
-        if (userDetailsEquals(userDetails, savedQuiz.getUser())) {
-            return repository.save(quiz);
-        } else {
+        Quiz savedQuiz = getQuiz(id);
+        if (!userDetailsEquals(userDetails, savedQuiz.getUser())){
             throw new Unauthorized();
         }
+        updateQuiz(quiz, savedQuiz);
+        return repository.save(savedQuiz);
     }
 
     private boolean userDetailsEquals(UserDetails userDetails, User user) {
         return userDetails.getUsername().equals(user.getUsername());
+    }
+
+    private void updateQuiz(Quiz src, Quiz target){
+        target.setTitle(src.getTitle());
+        target.setText(src.getText());
+        target.setOptions(src.getOptions());
+        target.setAnswer(src.getAnswer());
     }
 }

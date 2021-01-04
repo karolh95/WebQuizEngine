@@ -51,10 +51,10 @@ public class QuizzesController {
         return quizService.solve(id, userDetails, userAnswer.getAnswer());
     }
 
-    @PutMapping
-    public Quiz updateQuiz(@AuthenticationPrincipal UserDetails user, @RequestBody Quiz quiz) {
+    @PutMapping("{id}")
+    public Quiz updateQuiz(@PathVariable int id, @AuthenticationPrincipal UserDetails user, @RequestBody Quiz quiz) {
 
-        return quizService.updateQuiz(user, quiz);
+        return quizService.updateQuiz(id, user, quiz);
     }
 
     @DeleteMapping("{id}")
